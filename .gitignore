@@ -1,0 +1,40 @@
+# Create .gitignore file
+echo "# Scrapy
+*.pyc
+__pycache__/
+.scrapy/
+
+# Output data
+scraped_data/
+*.json
+*.csv
+*.xml
+
+# Logs
+*.log
+logs/
+
+# Virtual environment
+venv/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Temporary files
+*.tmp
+*.bak" > .gitignore
