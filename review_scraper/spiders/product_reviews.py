@@ -148,11 +148,12 @@ class ProductReviewsSpider(scrapy.Spider):
             review['product_name'] = product_name
             review['product_url'] = response.url
             
-            # Extract review data
+            # Extract review data (get raw HTML/text for cleaning in pipeline)
             review['reviewer_name'] = container.css('span.a-profile-name::text').get()
             review['rating'] = container.css('i.a-icon-star span.a-icon-alt::text').get()
             review['review_title'] = container.css('a[data-hook="review-title"] span::text').get()
-            review['review_text'] = container.css('span[data-hook="review-body"] span::text').get()
+            # Get raw review text with potential HTML
+            review['review_text'] = ' '.join(container.css('span[data-hook="review-body"] span::text, span[data-hook="review-body"] *::text').getall())
             review['review_date'] = container.css('span[data-hook="review-date"]::text').get()
             review['helpful_votes'] = container.css('span[data-hook="helpful-vote-statement"]::text').get()
             review['verified_purchase'] = container.css('span[data-hook="avp-badge"]::text').get()

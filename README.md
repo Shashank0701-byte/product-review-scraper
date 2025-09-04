@@ -6,8 +6,9 @@ A powerful Scrapy-based web scraper that extracts product reviews from various e
 
 🔍 **Multi-Site Support**: Works with Amazon, eBay, Walmart, Target, Best Buy, Alibaba/AliExpress, and generic e-commerce sites  
 📄 **Comprehensive Data**: Extracts product name, review text, rating, review date, reviewer name, and additional metadata  
+🧽 **Advanced Cleaning**: Removes HTML tags, emojis, and extra whitespace for clean, structured data  
+💾 **Multiple Outputs**: Clean CSV file + complete JSON with metadata  
 🔄 **Automatic Pagination**: Follows pagination links to scrape the specified number of reviews  
-💾 **Multiple Formats**: Save results in JSON, CSV, or XML format  
 ⚙️ **Configurable**: Set maximum number of reviews to scrape  
 🛡️ **Respectful Scraping**: Built-in delays and throttling to avoid overwhelming servers  
 
@@ -64,30 +65,76 @@ scrapy crawl reviews -a url="PRODUCT_URL" -o reviews.csv
 
 ## Output Data Structure
 
-The scraper extracts the following fields for each review:
+The scraper now provides **two output formats**:
+
+### 1. Cleaned CSV File (`cleaned_reviews_TIMESTAMP.csv`)
+Structured, clean data ready for analysis:
+
+| Column | Description | Example |
+|--------|-------------|----------|
+| product_name | Clean product name | "iPhone 13 Pro" |
+| review_text | Cleaned review content | "Great phone with excellent camera quality" |
+| rating | Numerical rating (0-5) | 4.5 |
+| review_date | Clean date text | "January 15, 2024" |
+| reviewer_name | Clean reviewer name | "John D." |
+
+### 2. Complete JSON File (`reviews_TIMESTAMP.json`)
+Full data with metadata for advanced analysis:
 
 ```json
 {
-  "product_name": "Product Name",
+  "product_name": "iPhone 13 Pro",
   "product_url": "https://example.com/product",
-  "review_text": "This is a great product...",
-  "rating": 5.0,
+  "review_text": "Great phone with excellent camera quality",
+  "rating": 4.5,
   "review_date": "January 15, 2024",
-  "reviewer_name": "John Doe",
-  "review_id": "unique_review_id",
-  "helpful_votes": 10,
+  "reviewer_name": "John D.",
+  "review_id": "R12345",
+  "helpful_votes": 15,
   "verified_purchase": true,
-  "review_title": "Great product!",
+  "review_title": "Excellent phone!",
   "scraped_at": "2024-01-15T14:30:00",
   "page_number": 1
 }
+```
+
+## Data Cleaning Features
+
+The scraper automatically cleans all review data:
+
+### 🧽 **Text Cleaning**
+- **HTML Removal**: Strips all HTML tags and entities
+- **Emoji Removal**: Removes emojis and special Unicode characters
+- **Whitespace Normalization**: Removes extra spaces, tabs, and line breaks
+- **Review Artifacts**: Removes platform-specific formatting and prefixes
+
+### ⭐ **Rating Normalization**
+- **Multiple Formats**: Handles "4.5/5", "4.5 stars", "8/10", etc.
+- **Scale Conversion**: Converts 10-point scales to 5-point scales
+- **Validation**: Ensures ratings are within 0-5 range
+
+### 📅 **Date Cleaning**
+- **Format Normalization**: Standardizes date formats
+- **Prefix Removal**: Removes "Reviewed on:", "Posted:", etc.
+
+### Example Before/After:
+**Before Cleaning:**
+```
+Review: <p>This product is <strong>amazing</strong>! 😍</p>
+   Highly   recommended! 👍<br>5 stars ⭐⭐⭐⭐⭐
+```
+
+**After Cleaning:**
+```
+This product is amazing! Highly recommended! 5 stars
 ```
 
 ## Output Files
 
 Results are saved in the `scraped_data/` directory:
 
-- **reviews_TIMESTAMP.json**: Main review data
+- **cleaned_reviews_TIMESTAMP.csv**: Clean, structured data ready for analysis
+- **reviews_TIMESTAMP.json**: Complete review data with metadata
 - **reviews_TIMESTAMP_summary.json**: Scraping statistics and summary
 
 ## Configuration

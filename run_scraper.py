@@ -158,7 +158,10 @@ Supported Sites:
     
     if success:
         print("\n🎉 Scraping session completed!")
-        print("📁 Check the 'scraped_data' folder for results")
+        print("📁 Check the 'scraped_data' folder for results:")
+        print("   • cleaned_reviews_TIMESTAMP.csv - Cleaned data in CSV format")
+        print("   • reviews_TIMESTAMP.json - Complete data in JSON format")
+        print("   • reviews_TIMESTAMP_summary.json - Session statistics")
     else:
         print("\n❌ Scraping failed. Check the logs above for details.")
         sys.exit(1)
