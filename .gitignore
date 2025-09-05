@@ -1,5 +1,4 @@
-# Create .gitignore file
-echo "# Scrapy
+# Scrapy
 *.pyc
 __pycache__/
 .scrapy/
@@ -37,4 +36,9 @@ build/
 
 # Temporary files
 *.tmp
-*.bak" > .gitignore
+*.bak
+
+# Environment variables (IMPORTANT - Keep API keys secure!)
+.env
+.env.local
+.env.*.local
