@@ -12,6 +12,7 @@ A powerful Scrapy-based web scraper that extracts product reviews from various e
 🔄 **Automatic Pagination**: Follows pagination links to scrape the specified number of reviews  
 ⚙️ **Configurable**: Set maximum number of reviews to scrape  
 🛡️ **Respectful Scraping**: Built-in delays and throttling to avoid overwhelming servers  
+⏰ **Automated Scheduling**: Weekly automated scraping, analysis, and reporting with email notifications  
 
 ## Installation
 
@@ -311,3 +312,31 @@ Feel free to contribute by:
 ## License
 
 This project is for educational purposes. Please respect website terms of service and applicable laws when using this tool.
+
+## Automated Analysis Scheduler
+
+The project includes a powerful scheduler that automates the entire analysis workflow:
+
+### Features
+- **Weekly Review Scraping**: Automatically scrapes new reviews from configured product URLs
+- **AI Analysis**: Runs Gemini AI analysis on the scraped reviews for theme detection
+- **Business Intelligence Reports**: Generates comprehensive PDF reports with visualizations
+- **Email Notifications**: Optionally sends reports via email
+
+### Setup
+1. Install additional dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+2. Configure the product URL in [review_analysis_scheduler.py](file:///D:/Python%20Projeccts/Product%20Review%20Scraper/review_analysis_scheduler.py)
+
+3. (Optional) Set up email configuration for report delivery
+
+### Usage
+```bash
+# Run the scheduler (immediate execution + weekly scheduling)
+python review_analysis_scheduler.py
+```
+
+See [SCHEDULER_README.md](file:///D:/Python%20Projeccts/Product%20Review%20Scraper/SCHEDULER_README.md) for detailed instructions.
