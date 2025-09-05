@@ -2,6 +2,20 @@
 
 This directory contains a Python script that analyzes product review data and generates visualizations to provide insights on customer sentiment and product performance.
 
+## Enhanced Version Available
+
+An enhanced version with VADER sentiment analysis is also available:
+- `review_analysis_vader.py` - Enhanced analysis with VADER sentiment
+- `VADER_ANALYSIS_README.md` - Documentation for enhanced version
+
+An advanced version using Google Gemini API for AI-powered analysis is also available:
+- `gemini_review_analyzer.py` - AI-powered review analysis with Google Gemini
+- `GEMINI_ANALYSIS_README.md` - Documentation for Gemini analysis
+
+A comprehensive business intelligence report generator is also available:
+- `business_intelligence_report.py` - Complete PDF report combining all analyses
+- `BUSINESS_INTELLIGENCE_README.md` - Documentation for business intelligence reporting
+
 ## Features
 
 The analysis script performs the following:

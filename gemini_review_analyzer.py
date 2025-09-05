@@ -8,13 +8,22 @@ and Overall Customer Opinion.
 """
 
 import pandas as pd
-import google.generativeai as genai
 import time
 import json
 import os
-from typing import List, Dict
+from typing import List, Dict, Optional
 import warnings
 warnings.filterwarnings('ignore')
+
+# Import Google Generative AI
+try:
+    import google.generativeai as genai
+    from google.generativeai.types import GenerationConfig
+    from google.generativeai.generative_models import GenerativeModel
+except ImportError as e:
+    print(f"Error importing Google Generative AI: {e}")
+    print("Please install it with: pip install google-generativeai")
+    exit(1)
 
 # Configure Gemini API
 # Note: In production, use environment variables or a secure config file
@@ -22,13 +31,12 @@ GEMINI_API_KEY = "AIzaSyC0fnFRqB7dkXBsh07Sw3LQLfMCDt8q2lc"
 genai.configure(api_key=GEMINI_API_KEY)
 
 # Generation configuration
-generation_config = {
-    "temperature": 0.7,
-    "top_p": 0.95,
-    "top_k": 64,
-    "max_output_tokens": 8192,
-    "response_mime_type": "text/plain",
-}
+generation_config = GenerationConfig(
+    temperature=0.7,
+    top_p=0.95,
+    top_k=64,
+    max_output_tokens=8192,
+)
 
 def load_reviews_data() -> pd.DataFrame:
     """Load the most recent processed reviews data."""
@@ -82,14 +90,16 @@ def analyze_reviews_with_gemini(reviews_batch: List[Dict]) -> str:
     prompt = create_gemini_prompt(reviews_batch)
     
     # Initialize the model
-    model = genai.GenerativeModel(
+    model = GenerativeModel(
         model_name="gemini-1.5-flash",
-        generation_config=generation_config,
     )
     
     # Send request to Gemini API
     try:
-        response = model.generate_content([prompt])
+        response = model.generate_content(
+            prompt,
+            generation_config=generation_config
+        )
         return response.text
     except Exception as e:
         print(f"Error calling Gemini API: {str(e)}")
@@ -126,7 +136,7 @@ def process_reviews_in_batches(df: pd.DataFrame, batch_size: int = 20) -> List[D
     
     return analyses
 
-def save_analyses(analyses: List[Dict], output_file: str = None):
+def save_analyses(analyses: List[Dict], output_file: Optional[str] = None):
     """Save the analyses to a JSON file."""
     if output_file is None:
         timestamp = time.strftime("%Y%m%d_%H%M%S")
@@ -157,7 +167,7 @@ def create_summary_report(analyses: List[Dict]) -> str:
     
     return report
 
-def save_summary_report(report: str, output_file: str = None):
+def save_summary_report(report: str, output_file: Optional[str] = None):
     """Save the summary report to a text file."""
     if output_file is None:
         timestamp = time.strftime("%Y%m%d_%H%M%S")
