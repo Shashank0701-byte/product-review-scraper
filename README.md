@@ -7,7 +7,8 @@ A powerful Scrapy-based web scraper that extracts product reviews from various e
 🔍 **Multi-Site Support**: Works with Amazon, eBay, Walmart, Target, Best Buy, Alibaba/AliExpress, and generic e-commerce sites  
 📄 **Comprehensive Data**: Extracts product name, review text, rating, review date, reviewer name, and additional metadata  
 🧽 **Advanced Cleaning**: Removes HTML tags, emojis, and extra whitespace for clean, structured data  
-💾 **Multiple Outputs**: Clean CSV file + complete JSON with metadata  
+🔤 **NLP Preprocessing**: Advanced text preprocessing with NLTK including lowercasing, punctuation removal, stopword removal, and lemmatization  
+💾 **Multiple Outputs**: Clean CSV file + complete JSON with metadata + preprocessed text analysis  
 🔄 **Automatic Pagination**: Follows pagination links to scrape the specified number of reviews  
 ⚙️ **Configurable**: Set maximum number of reviews to scrape  
 🛡️ **Respectful Scraping**: Built-in delays and throttling to avoid overwhelming servers  
@@ -18,6 +19,12 @@ A powerful Scrapy-based web scraper that extracts product reviews from various e
 2. **Install dependencies**:
    ```bash
    pip install -r requirements.txt
+   ```
+
+3. **For text preprocessing (optional)**:
+   ```bash
+   # Additional dependencies for NLP preprocessing
+   pip install pandas nltk
    ```
 
 ## Quick Start
@@ -63,9 +70,44 @@ scrapy crawl reviews -a url="PRODUCT_URL" -o reviews.csv
 | Alibaba/AliExpress | ✅ Good | alibaba.com, aliexpress.com |
 | Generic Sites | ⚠️ Basic | Uses common CSS selectors |
 
+## Text Preprocessing with NLTK
+
+The project includes an advanced text preprocessing script that uses Pandas and NLTK to clean and process review text:
+
+### Features
+- **Lowercasing**: Converts all text to lowercase for consistency
+- **Punctuation Removal**: Removes punctuation marks and special characters
+- **Stopword Removal**: Removes common stopwords including custom review-specific terms
+- **Lemmatization**: Reduces words to their root form using POS tagging
+- **HTML Cleaning**: Removes HTML tags and entities
+- **Emoji Removal**: Strips emojis and special Unicode characters
+
+### Usage
+
+```bash
+# Automatically process the latest CSV file
+python text_preprocessor.py --auto
+
+# Process a specific file
+python text_preprocessor.py --file scraped_data/cleaned_reviews_20240115.csv
+
+# Specify output file and text column
+python text_preprocessor.py --file reviews.csv --output processed.csv --column review_text
+```
+
+### Output
+The script adds a new `cleaned_review` column to your CSV file containing the preprocessed text:
+
+| Column | Original | Cleaned |
+|--------|----------|----------|
+| review_text | `<p>This is <strong>AMAZING</strong>! 😍 I love it!</p>` | `strong amazing love` |
+| review_text | `The phone works fine but it's expensive.` | `phone work fine expensive` |
+
+
+
 ## Output Data Structure
 
-The scraper now provides **two output formats**:
+The scraper now provides **multiple output formats**:
 
 ### 1. Cleaned CSV File (`cleaned_reviews_TIMESTAMP.csv`)
 Structured, clean data ready for analysis:
@@ -78,7 +120,14 @@ Structured, clean data ready for analysis:
 | review_date | Clean date text | "January 15, 2024" |
 | reviewer_name | Clean reviewer name | "John D." |
 
-### 2. Complete JSON File (`reviews_TIMESTAMP.json`)
+### 2. Preprocessed CSV File (`processed_reviews_TIMESTAMP.csv`)
+Includes all above columns plus:
+
+| Column | Description | Example |
+|--------|-------------|----------|
+| cleaned_review | NLP-processed text | "great phone excellent camera quality" |
+
+### 3. Complete JSON File (`reviews_TIMESTAMP.json`)
 Full data with metadata for advanced analysis:
 
 ```json
@@ -134,6 +183,7 @@ This product is amazing! Highly recommended! 5 stars
 Results are saved in the `scraped_data/` directory:
 
 - **cleaned_reviews_TIMESTAMP.csv**: Clean, structured data ready for analysis
+- **processed_reviews_TIMESTAMP.csv**: Data with additional cleaned_review column from NLP preprocessing
 - **reviews_TIMESTAMP.json**: Complete review data with metadata
 - **reviews_TIMESTAMP_summary.json**: Scraping statistics and summary
 
@@ -184,9 +234,11 @@ Product Review Scraper/
 │   ├── __init__.py
 │   ├── items.py                  # Data structure definitions
 │   ├── pipelines.py              # Data processing pipeline
-│   └── settings.py               # Scrapy settings
+│   ├── settings.py               # Scrapy settings
+│   └── text_cleaner.py           # Text cleaning utilities
 ├── scraped_data/                 # Output directory
 ├── run_scraper.py                # Utility runner script
+├── text_preprocessor.py          # Advanced NLP preprocessing
 ├── requirements.txt              # Dependencies
 ├── scrapy.cfg                    # Scrapy configuration
 └── README.md                     # This file
