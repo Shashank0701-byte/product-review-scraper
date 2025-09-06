@@ -13,6 +13,7 @@ A powerful Scrapy-based web scraper that extracts product reviews from various e
 ⚙️ **Configurable**: Set maximum number of reviews to scrape  
 🛡️ **Respectful Scraping**: Built-in delays and throttling to avoid overwhelming servers  
 ⏰ **Automated Scheduling**: Weekly automated scraping, analysis, and reporting with email notifications  
+🌐 **Web Dashboard**: Modern React dashboard for visualizing AI-generated insights  
 
 ## Installation
 
@@ -238,6 +239,9 @@ Product Review Scraper/
 │   ├── settings.py               # Scrapy settings
 │   └── text_cleaner.py           # Text cleaning utilities
 ├── scraped_data/                 # Output directory
+├── web-dashboard/                # Web dashboard (React + Node.js)
+│   ├── frontend/                 # React frontend
+│   └── backend/                  # Node.js backend
 ├── run_scraper.py                # Utility runner script
 ├── text_preprocessor.py          # Advanced NLP preprocessing
 ├── requirements.txt              # Dependencies
@@ -340,3 +344,32 @@ python review_analysis_scheduler.py
 ```
 
 See [SCHEDULER_README.md](file:///D:/Python%20Projeccts/Product%20Review%20Scraper/SCHEDULER_README.md) for detailed instructions.
+
+## Web Dashboard
+
+The project now includes a modern web dashboard for visualizing AI-generated product review insights.
+
+### Features
+
+- **Landing Page**: Welcome page with product features
+- **Authentication**: Login and signup pages with proper validation
+- **Dashboard**: Beautiful card-based visualization of AI analysis results
+- **Responsive Design**: Works on all device sizes
+- **Modern UI**: Clean and intuitive user interface
+
+### Tech Stack
+
+#### Frontend
+- React (Vite)
+- Tailwind CSS
+- React Router
+
+#### Backend
+- Node.js
+- Express
+- MongoDB
+- JWT Authentication
+
+### Getting Started
+
+See [web-dashboard/README.md](web-dashboard/README.md) for detailed instructions on setting up and running the web dashboard.
